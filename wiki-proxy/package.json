@@ -1,0 +1,27 @@
+{
+  "name": "wiki-proxy",
+  "version": "0.1.0",
+  "description": "MCP stdio proxy exposing wiki.* RPCs so the MOLT Claude Code profile can read/write the personal Supabase wiki without conflicting with its own single-org Supabase MCP.",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "wiki-proxy": "bin/server"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch",
+    "smoke": "node scripts/smoke.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "@supabase/supabase-js": "^2.45.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

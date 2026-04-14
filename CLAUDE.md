@@ -89,6 +89,8 @@ Skills detect profile at runtime and pick the transport. Ingest fuentes are part
 
 All return `jsonb`. Naming mirrors `content.*`.
 
+Every `wiki.*` RPC also has a `public.wiki_<fn>` wrapper (`SECURITY DEFINER`, locked `search_path`) so PostgREST can reach them via the default REST surface. The `wiki-proxy` MCP server calls the public wrappers.
+
 ## Local development
 
 Full local stack via docker-compose — Postgres 17 with migrations auto-applied.
@@ -114,12 +116,10 @@ See `plan/PLAN.md` for full plan.
 |---|---|---|
 | 1 | Scaffold | done |
 | 2 | Schema + RPCs | done (local + prod) |
-| 2b | wiki-proxy MCP server | pending |
-| 3 | wiki-ingest MVP (queue items only) | done for personal profile; MOLT blocked on 2b |
-| 4 | wiki-ask with write-back | pending |
-| 5 | wiki-lint | pending |
-| 6 | Scheduled cloud triggers | pending |
-| 7 | Expand ingest (digests, actions) | pending |
-| 8 | Claude Code logs (both profiles) | pending |
-| 9 | Notion + repos ingest | pending |
-| 10 | wiki-review monthly | pending |
+| 2b | wiki-proxy MCP server | done (TS stdio, smoke-tested against prod) |
+| 3 | wiki-ingest MVP (queue items only) | done; 6 articles live in prod |
+| 4 | wiki-ask query + write-back | done (skill v0.2.0) |
+| 5 | wiki-lint batched audit | done (skill v0.2.0) |
+| 6 | Scheduled triggers | documented (`plan/PHASE-6-SCHEDULED.md`) |
+| 7-9 | Ingest expansion (digests, actions, logs, Notion, repos) | documented in wiki-ingest v0.4.0 |
+| 10 | wiki-review monthly | done (skill v0.2.0) |

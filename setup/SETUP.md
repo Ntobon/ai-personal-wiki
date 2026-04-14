@@ -60,23 +60,49 @@ Cannot add a second Supabase MCP (single-org constraint). Add `wiki-proxy` as a 
 
 Uses personal Supabase MCP (already connected). No action.
 
-## 5. wiki-proxy credentials (Phase 2b)
+## 5. wiki-proxy install (for MOLT profile)
 
 ```bash
+cd wiki-proxy
+npm install
+npm run build
+
 mkdir -p ~/.claude-personal/wiki-proxy
 cat > ~/.claude-personal/wiki-proxy/config.json <<EOF
 {
   "supabase_url": "https://wjypineoplzwayvktorc.supabase.co",
-  "supabase_anon_key": "...",
+  "supabase_key": "sb_publishable_...",
   "user_email": "your-email@example.com"
 }
 EOF
 chmod 600 ~/.claude-personal/wiki-proxy/config.json
+
+# Smoke test
+WIKI_PROXY_CONFIG=~/.claude-personal/wiki-proxy/config.json npm run smoke
 ```
 
-## 6. Scheduled triggers (Phase 6)
+Then in MOLT's `~/.claude/.mcp.json`:
 
-Via `/schedule`. Cloud-only fuentes run server-side. Local-filesystem ingest (Claude Code logs, repos) runs via profile-scoped hooks or manual invocation.
+```json
+{
+  "mcpServers": {
+    "wiki-proxy": {
+      "command": "node",
+      "args": ["/home/you/personal/personal-wiki/wiki-proxy/dist/index.js"],
+      "env": { "WIKI_PROXY_CONFIG": "/home/you/.claude-personal/wiki-proxy/config.json" }
+    }
+  }
+}
+```
+
+## 6. Scheduled triggers
+
+See `plan/PHASE-6-SCHEDULED.md`. Summary:
+
+- Daily cloud ingest: `/schedule create … prompt: /wiki-ingest --sources=queue,digests,actions`
+- Weekly lint: `/schedule create … prompt: /wiki-lint`
+- Monthly review: `/schedule create … prompt: /wiki-review`
+- Local-filesystem ingest (logs, repos): Stop hook in each profile's `settings.json`, or manual `ccp /wiki-ingest --sources=logs,repos`.
 
 ## Smoke test
 
