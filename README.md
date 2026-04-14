@@ -35,6 +35,10 @@ See `setup/SETUP.md`. In short:
 | `wiki-lint` | Batched audit |
 | `wiki-review` | Monthly actionable report |
 
+## Docs
+
+- `docs/HOW-IT-WORKS.md` — architecture, data model, transport, flows, feedback loops.
+
 ## Plan
 
-`plan/PLAN.md` has the full plan. Currently at **Phase 1 — Scaffold**.
+`plan/PLAN.md` has the original plan; per-phase status lives in `plan/PHASE-*.md` and `CLAUDE.md`.
