@@ -1,0 +1,33 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Local config
+config.json
+
+# Environment secrets
+.env
+
+# Claude Code local state
+.claude/memory/
+CLAUDE.local.md
+
+# wiki-proxy local credentials (never commit — also live outside repo in ~/.claude-personal/wiki-proxy/)
+wiki-proxy/config.json
+wiki-proxy/node_modules/
+wiki-proxy/dist/
+
+# Node / TS
+node_modules/
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.pyc
+
+# Local docker volume data
+.pgdata/
