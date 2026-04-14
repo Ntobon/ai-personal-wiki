@@ -1,28 +1,27 @@
 # Phase 3 — wiki-ingest MVP
 
-Gate: 50 queue items → ~15–25 articles from personal profile; identical from MOLT via proxy.
+## Status
 
-## Scope
-
-Reading queue only. Other sources (digests, actions, logs, Notion, repos) come in later phases.
+Personal-profile path done (2026-04-14). MOLT-profile path blocked on Phase 2b (wiki-proxy MCP server); skill detects missing proxy and bails gracefully.
 
 ## Deliverables
 
-- `skills/wiki-ingest/SKILL.md` complete implementation for queue items
-- Transport abstraction: detect profile, pick MCP (official vs proxy)
-- Inline lint: trigram dedup, `rebuild_links`, contradiction flag
-- Idempotency via `wiki.log_source`
+- [x] `skills/wiki-ingest/SKILL.md` complete implementation for queue items (version 0.3.0)
+- [x] Skill installed at `~/.claude-personal/skills/wiki-ingest/`
+- [x] Inline dedup via `wiki.find_by_alias` before create
+- [x] `wiki.rebuild_links` after each upsert
+- [x] Idempotency via `wiki.log_source`
+- [ ] Transport abstraction for MOLT profile — blocked on Phase 2b
+
+## Smoke-test result (5 queue items)
+
+- 6 articles created (5 topical + `molt` cross-cutting)
+- 17 links rebuilt, 0 orphans
+- 5 rows in `wiki.sources`; replay is a no-op
+- Search, scope filter, backlinks all return correct counts
 
 ## Exit criteria
 
-```
-# Personal profile
-> /wiki-ingest
-# → 15–25 articles created, logs in wiki.sources
-
-# MOLT profile
-> /wiki-ingest
-# → 0 new articles (already ingested), same log state
-```
-
-TBD.
+- [x] Personal profile: real articles in prod from real queue items
+- [ ] MOLT profile: Phase 2b required
+- [ ] Full 50-item run (user invokes `/wiki-ingest` when ready)

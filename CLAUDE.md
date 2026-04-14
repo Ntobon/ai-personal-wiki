@@ -113,9 +113,9 @@ See `plan/PLAN.md` for full plan.
 | Phase | What | Status |
 |---|---|---|
 | 1 | Scaffold | done |
-| 2 | Schema + RPCs | done (local; prod apply pending) |
+| 2 | Schema + RPCs | done (local + prod) |
 | 2b | wiki-proxy MCP server | pending |
-| 3 | wiki-ingest MVP (queue items only) | pending |
+| 3 | wiki-ingest MVP (queue items only) | done for personal profile; MOLT blocked on 2b |
 | 4 | wiki-ask with write-back | pending |
 | 5 | wiki-lint | pending |
 | 6 | Scheduled cloud triggers | pending |
