@@ -2,38 +2,19 @@
 
 Use Claude's `/schedule` system for cloud-only ingests and lints. Local-filesystem ingests (Claude Code logs, repos) require a running profile, so wire them via a `Stop` hook or by manual invocation.
 
-## Cloud-only schedules (via `/schedule`)
+## Cloud-only schedules (registered with Anthropic CCR)
 
-Run these from any profile — they touch only `content.*` (queue, digests, actions) and `wiki.*`.
+These run in Anthropic's cloud — no local machine needed. Aligned to the user's work window (America/Bogota, UTC-5), so output lands during the day.
 
-### Daily ingest
+| Trigger | ID | Cron (UTC) | Bogota |
+|---|---|---|---|
+| `wiki-daily-cloud-ingest` | `trig_01F6TD9WDVAGwY5NkUf6jGGW` | `0 14 * * 1-5` | Mon–Fri 09:00 |
+| `wiki-weekly-lint` | `trig_01HiU3kiysjD4k6xaF7XuDwv` | `0 15 * * 1` | Mon 10:00 |
+| `wiki-monthly-review` | `trig_01TiAPb2Z44opwFU846dNYiC` | `0 16 1 * *` | 1st 11:00 |
 
-```
-/schedule create
-  name: wiki-daily-cloud-ingest
-  cron: 0 6 * * *         # 06:00 local
-  prompt: /wiki-ingest --sources=queue,digests,actions
-```
+Prompts are fully self-contained — no git checkout, no config.json. User ID is looked up at runtime via `public.wiki_get_user_context('nicolastoboncastano@gmail.com')` over the attached Supabase MCP.
 
-### Weekly lint
-
-```
-/schedule create
-  name: wiki-weekly-lint
-  cron: 0 7 * * 1         # Monday 07:00
-  prompt: /wiki-lint
-```
-
-### Monthly review
-
-```
-/schedule create
-  name: wiki-monthly-review
-  cron: 0 8 1 * *         # 1st of month, 08:00
-  prompt: /wiki-review
-```
-
-List / edit / remove via `/schedule list` etc. Each scheduled run is a fresh conversation; the skills bootstrap from `personal-wiki/config.json` or memory, so no extra params are needed.
+Manage at https://claude.ai/code/scheduled. Deletes only via the UI (API doesn't support delete).
 
 ## Local-source ingests (per profile)
 

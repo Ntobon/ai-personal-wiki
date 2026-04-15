@@ -131,15 +131,15 @@ Logs in `~/.claude/projects/*` are `molt`-scoped by default; logs in `~/.claude-
 
 ## Scheduling
 
-Cloud-only ops run via `/schedule` (works from any profile, server-side):
+Cloud-only ops run via Anthropic CCR triggers (self-contained prompts, Supabase MCP attached). Times chosen to land during the work window (Mon–Fri, America/Bogota):
 
-| Schedule | Cron | Prompt |
-|---|---|---|
-| Daily cloud ingest | `0 6 * * *` | `/wiki-ingest --sources=queue,digests,actions` |
-| Weekly lint | `0 7 * * 1` | `/wiki-lint` |
-| Monthly review | `0 8 1 * *` | `/wiki-review` |
+| Schedule | Cron (UTC) | Bogota | Purpose |
+|---|---|---|---|
+| Daily cloud ingest | `0 14 * * 1-5` | Mon–Fri 09:00 | queue + digests + actions |
+| Weekly lint | `0 15 * * 1` | Mon 10:00 | orphans / dangling / stale / collisions |
+| Monthly review | `0 16 1 * *` | 1st 11:00 | Top-5 actionable, saved as wiki article |
 
-Local-filesystem ingest (Claude Code logs, repos) requires a live profile. Either a `Stop` hook in each profile's `settings.json` (auto-fires after each session) or manual `ccp /wiki-ingest --sources=logs,repos`. Start manual until the filter prompt is dialed in — then move to the hook.
+Local-filesystem ingest (Claude Code logs, repos) requires a live profile — remote triggers can't reach `~/.claude-personal/projects/*` or your repo tree. Either a `Stop` hook in each profile's `settings.json` (auto-fires after each session) or manual `ccp /wiki-ingest --sources=logs,repos`. Start manual until the filter prompt is dialed in — then move to the hook.
 
 ## Feedback loops, briefly
 
